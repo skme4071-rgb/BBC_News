@@ -43,12 +43,7 @@ export const EMPTY_ARTICLE = {
 };
 
 
-export Source = {
-    name: "iqbal",
-    logo: "",
-    url: "",
-    type: "",
-},
+// https://698b4f8990512f57cbb3a692--bbc-news-24.netlify.app
 
 
 export default function Editor() {

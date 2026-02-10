@@ -52,8 +52,6 @@ app.use(cookieParser());
 // Media uploads
 app.use("/upload", express.static(path.join(__dirname, "../upload")));
 
-// Public folder (if any)
-// app.use(express.static(path.join(__dirname, "../public")));
 
 // React build
 const clientDist = path.join(__dirname, "../../client/dist");
