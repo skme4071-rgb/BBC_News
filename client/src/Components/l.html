@@ -1,0 +1,370 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Login UI</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        font-family: Arial, Helvetica, sans-serif;
+      }
+
+      body {
+        margin: 0;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #f6f5f7;
+      }
+
+      .container {
+        width: 800px;
+        height: 450px;
+        display: flex;
+        background: #fff;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 14px 28px rgba(0, 0, 0, 0.15);
+      }
+
+      /* LEFT */
+      .sign-in {
+        width: 50%;
+        padding: 50px;
+        text-align: center;
+      }
+
+      .sign-in h2 {
+        margin-bottom: 20px;
+      }
+
+      .social-icons {
+        margin: 15px 0;
+      }
+
+      .social-icons span {
+        display: inline-block;
+        width: 35px;
+        height: 35px;
+        line-height: 35px;
+        border: 1px solid #ddd;
+        border-radius: 50%;
+        margin: 0 5px;
+        cursor: pointer;
+      }
+
+      input {
+        width: 100%;
+        padding: 12px;
+        margin: 10px 0;
+        border: none;
+        background: #eee;
+      }
+
+      .forgot {
+        font-size: 13px;
+        margin: 10px 0;
+        display: block;
+        color: #555;
+        text-decoration: none;
+      }
+
+      button {
+        border-radius: 20px;
+        border: none;
+        background: #ff4b2b;
+        color: #fff;
+        font-size: 12px;
+        font-weight: bold;
+        padding: 12px 40px;
+        cursor: pointer;
+      }
+
+      /* RIGHT */
+      .overlay {
+        width: 50%;
+        background: linear-gradient(to right, #ff416c, #ff4b2b);
+        color: #fff;
+        text-align: center;
+        padding: 80px 40px;
+      }
+
+      .overlay h2 {
+        font-size: 28px;
+      }
+
+      .overlay p {
+        font-size: 14px;
+        margin: 20px 0;
+      }
+
+      .overlay button {
+        background: transparent;
+        border: 1px solid #fff;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="sign-in">
+        <h2>Sign in</h2>
+
+        <div class="social-icons">
+          <span>f</span>
+          <span>G+</span>
+          <span>in</span>
+        </div>
+
+        <p>or use your account</p>
+
+        <input type="email" placeholder="Email" />
+        <input type="password" placeholder="Password" />
+
+        <a href="#" class="forgot">Forgot your password?</a>
+
+        <button>SIGN IN</button>
+      </div>
+
+      <div class="overlay">
+        <h2>Hello, Friend!</h2>
+        <p>Enter your personal details and start journey with us</p>
+        <button>SIGN UP</button>
+      </div>
+    </div>
+  </body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="parent">dsafsaf
+      <button id="child">Click Me</button>
+    </div>
+
+    <script>
+      document.getElementById("parent").addEventListener("click", () => {
+        console.log("Parent clicked");
+      });
+
+      document.getElementById("child").addEventListener("click", (e) => {
+        e.stopPropagation();
+        console.log("Child clicked");
+      });
+    </script>
+  </body>
+</html>
+
+
+<!-- 
+import { useState, useRef, useEffect } from "react";
+import Form from "./../Authentication/Form";
+import useFetch from "./../../hooks/useFetch";
+import Notification from "./../../lib/Notification";
+import { CustomLink } from "./../utlis/tag";
+import { UseAuth } from "./../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
+
+export default function Signin() {
+  const formRef = useRef(null);
+  const navigate = useNavigate();
+  const { AuthDataFun } = UseAuth();
+
+  useEffect(() => {
+    formRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "center",
+    });
+  }, []);
+
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const [errors, setErrors] = useState({});
+
+  const ChangeHandle = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  // 🔐 Validation
+  const validate = () => {
+    let newErrors = {};
+
+    if (!formData.email) {
+      newErrors.email = "Email is required";
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = "Invalid email address";
+    }
+
+    if (!formData.password) {
+      newErrors.password = "Password is required";
+    } else if (formData.password.length < 6) {
+      newErrors.password = "Password must be at least 6 characters";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const { data, refetch, loading, error } = useFetch(
+    "http://localhost:3000/Login",
+    {
+      method: "POST",
+      body: formData,
+      auto: false,
+    }
+  );
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!validate()) return;
+    refetch();
+  };
+
+  useEffect(() => {
+    if (data?.success) {
+      AuthDataFun({
+        user: data.user,
+        isLogin: data.isLogin,
+        token: data.token
+      });
+      navigate("/");
+    }
+
+  }, [data]);
+
+
+
+  return (
+    <Form onSubmit={handleSubmit} formName="Register">
+      {error && (
+        <Notification>
+          Login failed. Please check email or password.
+        </Notification>
+      )}
+
+      <input
+        type="email"
+        name="email"
+        placeholder="Email"
+        className="mb-1 p-2 border rounded w-full"
+        value={formData.email}
+        onChange={ChangeHandle}
+      />
+      {errors.email && (
+        <p className="text-red-500 text-sm mb-2">{errors.email}</p>
+      )}
+
+      <input
+        type="password"
+        name="password"
+        placeholder="Password"
+        className="mb-1 p-2 border rounded w-full"
+        value={formData.password}
+        onChange={ChangeHandle}
+      />
+      {errors.password && (
+        <p className="text-red-500 text-sm mb-3">{errors.password}</p>
+      )}
+
+      <CustomLink
+        to="/forgot-password"
+        className="text-sm text-blue-500 mb-4 inline-block"
+      >
+        Forgot your password?
+      </CustomLink>
+
+      <button
+        disabled={loading}
+        className="bg-blue-600 text-white py-2 rounded hover:bg-blue-700 w-full"
+      >
+        {loading ? (
+          <div className="loading-spinner mx-auto"></div>
+        ) : (
+          "SIGN IN"
+        )}
+      </button>
+    </Form>
+  );
+} -->
+sdfsdfsd
+
+<!-- 
+import Button from "../Button";
+import { CustomLink } from "./../utlis/tag";
+
+
+import { useEffect, useRef } from "react";
+export default function Form({ children, formName, ...rest }) {
+
+  const formRef = useRef(null);
+
+
+  useEffect(() => {
+
+    formRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "center", // start | center | end
+    });
+  });
+
+
+
+  return (
+    <div
+      ref={formRef}
+      className="min-h-screen flex items-center justify-center p-4 relative"
+    >
+      <div className="w-full max-w-4xl flex flex-col md:flex-row bg-white overflow-hidden shadow-lg rounded-lg relative">
+        <CustomLink
+          to="/"
+          className="absolute top-4 right-4  cursor-pointer text-red-900 hover:text-gray-800 text-xl font-bold"
+        >
+          ×
+        </CustomLink>
+
+        <div className="w-full md:w-1/2 p-6 md:p-12 text-center flex flex-col justify-center">
+          <h2 className="mb-6 text-2xl font-bold">Sign in</h2>
+
+          <div className="flex justify-center gap-3 mb-4">
+            <span className="cursor-pointer border h-10 w-10 leading-10 rounded-full inline-block">
+              f
+            </span>
+            <span className="cursor-pointer border h-10 w-10 leading-10 rounded-full inline-block">
+              G+
+            </span>
+            <span className="cursor-pointer border h-10 w-10 leading-10 rounded-full inline-block">
+              in
+            </span>
+          </div>
+
+          <p className="text-sm mb-4">or use your account</p>
+
+          <form {...rest}>{children}</form>
+        </div>
+
+        <div className="w-full md:w-1/2 bg-blue-600 text-white flex flex-col items-center justify-center p-8 text-center">
+          <h2 className="text-2xl font-bold mb-4">Hello, Friend!</h2>
+          <p className="mb-6">
+            Enter your personal details and start journey with us
+          </p>
+          <CustomLink
+
+            to={`/${formName}`}
+            className="border border-white px-6 py-2 rounded     hover:text-blue-900 "
+          >
+            {formName}
+          </CustomLink>
+        </div>
+      </div>
+    </div>
+  );
+} -->

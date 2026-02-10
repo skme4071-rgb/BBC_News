@@ -1,0 +1,1095 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BBC News - Home v8</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style/index.css">
+</head>
+
+<body class="font-inter bg-white text-gray-900 antialiased">
+    <!-- Breaking News Banner -->
+    <div class="breaking-banner text-white py-3 px-4 relative overflow-hidden">
+        <div class="container mx-auto flex items-center justify-center text-center">
+            <span id="live" data-id="live"
+                class="bg-white text-red-600 px-3 py-1 text-xs font-bold mr-3 rounded-full shadow-sm">LIVE</span>
+            <div id="breaking-banner-news" class="flex-1 min-w-0 "> </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="bg-black text-white shadow-lg">
+        <div class="container mx-auto px-4">
+            <!-- Top Bar -->
+            <div class="hidden sm:flex justify-between items-center py-3 text-sm border-b border-gray-700">
+                <div class="flex items-center space-x-6">
+                    <span class="hidden md:inline text-gray-300">Tuesday, 17 December 2024</span>
+                    <span class="text-gray-300">London, UK</span>
+                    <div class="flex items-center space-x-2">
+                        <span class="text-yellow-400">🌧️</span>
+                        <span class="font-medium">8°C</span>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <!-- User Authentication Section -->
+                    <div id="auth-section" class="flex items-center space-x-4">
+                        <!-- Not Logged In -->
+                        <div id="auth-buttons" class="flex items-center space-x-4">
+                            <button onclick="openAuthModal('signin')"
+                                class="hover:text-gray-300 transition-colors hidden md:inline-block">Sign in</button>
+                            <button onclick="openAuthModal('register')"
+                                class="hover:text-gray-300 transition-colors hidden md:inline-block">Register</button>
+                            <button onclick="openAuthModal('account')" class="hover:text-gray-300 transition-colors">My
+                                Account</button>
+                        </div>
+
+                        <!-- Logged In User -->
+                        <div id="user-section" class="hidden relative">
+                            <button onclick="toggleUserDropdown()"
+                                class="flex items-center space-x-2 hover:text-gray-300 transition-colors">
+                                <div class="w-8 h-8 bg-red-600 rounded-full flex items-center justify-center">
+                                    <span id="user-avatar" class="text-sm font-bold">JD</span>
+                                </div>
+                                <span id="user-name" class="hidden md:inline">John Doe</span>
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                                <span id="notification-badge"
+                                    class="notification-badge w-2 h-2 bg-red-500 rounded-full hidden"></span>
+                            </button>
+
+                            <!-- User Dropdown -->
+                            <div id="user-dropdown"
+                                class="user-dropdown absolute right-0 mt-2 w-64 bg-white text-gray-900 rounded-xl shadow-2xl border border-gray-200 z-50">
+                                <div class="p-4 border-b border-gray-100">
+                                    <div class="flex items-center space-x-3">
+                                        <div class="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center">
+                                            <span id="dropdown-avatar" class="text-white font-bold">JD</span>
+                                        </div>
+                                        <div>
+                                            <p id="dropdown-name" class="font-semibold">John Doe</p>
+                                            <p id="dropdown-email" class="text-sm text-gray-500">john.doe@email.com</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="py-2">
+                                    <a href="#"
+                                        class="flex items-center space-x-3 px-4 py-3 hover:bg-gray-50 transition-colors">
+                                        <span class="text-lg">👤</span>
+                                        <span>My Profile</span>
+                                    </a>
+                                    <a href="#"
+                                        class="flex items-center space-x-3 px-4 py-3 hover:bg-gray-50 transition-colors">
+                                        <span class="text-lg">📰</span>
+                                        <span>My Articles</span>
+                                        <span
+                                            class="ml-auto bg-red-100 text-red-600 text-xs px-2 py-1 rounded-full">3</span>
+                                    </a>
+                                    <a href="#"
+                                        class="flex items-center space-x-3 px-4 py-3 hover:bg-gray-50 transition-colors">
+                                        <span class="text-lg">🔖</span>
+                                        <span>Bookmarks</span>
+                                        <span
+                                            class="ml-auto bg-blue-100 text-blue-600 text-xs px-2 py-1 rounded-full">12</span>
+                                    </a>
+                                    <a href="#"
+                                        class="flex items-center space-x-3 px-4 py-3 hover:bg-gray-50 transition-colors">
+                                        <span class="text-lg">🔔</span>
+                                        <span>Notifications</span>
+                                        <span
+                                            class="ml-auto bg-green-100 text-green-600 text-xs px-2 py-1 rounded-full">5</span>
+                                    </a>
+                                    <a href="#"
+                                        class="flex items-center space-x-3 px-4 py-3 hover:bg-gray-50 transition-colors">
+                                        <span class="text-lg">⚙️</span>
+                                        <span>Settings</span>
+                                    </a>
+                                </div>
+                                <div class="border-t border-gray-100 py-2">
+                                    <button onclick="logout()"
+                                        class="flex items-center space-x-3 px-4 py-3 hover:bg-red-50 text-red-600 transition-colors w-full text-left">
+                                        <span class="text-lg">🚪</span>
+                                        <span>Sign Out</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Header -->
+            <div class="flex justify-between items-center py-4 mobile-header-compact">
+                <div class="flex items-center space-x-3 sm:space-x-6">
+                    <!-- BBC Logo -->
+                    <div class="flex items-center space-x-3">
+                        <div
+                            class="bg-white text-black px-3 py-2 font-bold text-lg sm:text-xl mobile-logo rounded shadow-sm">
+                            BBC</div>
+                        <span class="text-xl sm:text-2xl font-light mobile-news-text">News</span>
+                    </div>
+                </div>
+
+                <!-- Search & Menu -->
+                <div class="flex items-center space-x-3">
+                    <div class="relative hidden sm:block">
+                        <input type="search" placeholder="Search BBC News..."
+                            class="bg-gray-800 text-white px-4 py-2 pr-10 rounded-lg border border-gray-600 focus:outline-none focus:border-white focus:ring-2 focus:ring-white/20 w-64 mobile-search transition-all">
+                        <svg class="w-4 h-4 text-gray-400 absolute right-3 top-3" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                    </div>
+
+                    <!-- Mobile Search Icon -->
+                    <button class="sm:hidden p-2 hover:bg-gray-800 rounded-lg transition-colors"
+                        onclick="toggleMobileSearch()">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                    </button>
+
+                    <!-- Mobile Menu Button -->
+                    <button class="md:hidden p-2 hover:bg-gray-800 rounded-lg transition-colors"
+                        onclick="toggleMobileMenu()">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile Search Bar -->
+            <div id="mobile-search" class="sm:hidden border-t border-gray-700 py-4 hidden">
+                <div class="relative">
+                    <input type="search" placeholder="Search BBC News..."
+                        class="bg-gray-800 text-white px-4 py-3 pr-10 rounded-lg border border-gray-600 focus:outline-none focus:border-white focus:ring-2 focus:ring-white/20 w-full mobile-search">
+                    <svg class="w-4 h-4 text-gray-400 absolute right-3 top-4" fill="none" stroke="currentColor"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Authentication Modal -->
+    <div id="auth-modal" class="auth-modal fixed inset-0 hidden z-50 flex items-center justify-center p-4">
+        <div class="auth-form rounded-2xl max-w-md w-full p-8 text-white relative overflow-hidden">
+            <!-- Background Pattern -->
+            <div class="absolute inset-0 opacity-10">
+                <div class="absolute inset-0"
+                    style="background-image: radial-gradient(circle at 25% 25%, white 2px, transparent 2px); background-size: 30px 30px;">
+                </div>
+            </div>
+
+            <!-- Close Button -->
+            <button onclick="closeAuthModal()"
+                class="absolute top-4 right-4 text-white/70 hover:text-white text-2xl transition-colors">×</button>
+
+            <!-- Sign In Form -->
+            <div id="signin-form" class="relative z-10">
+                <div class="text-center mb-8">
+                    <div class="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-2xl">🔐</span>
+                    </div>
+                    <h2 class="text-2xl font-bold mb-2">Welcome Back</h2>
+                    <p class="text-white/80">Sign in to your BBC News account</p>
+                </div>
+
+                <form onsubmit="handleSignIn(event)" class="space-y-6">
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Email Address</label>
+                        <input type="email" id="signin-email" required
+                            class="form-input w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/60 focus:outline-none"
+                            placeholder="Enter your email">
+                        <div id="signin-email-error" class="validation-message text-red-300 text-sm mt-1"></div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Password</label>
+                        <div class="relative">
+                            <input type="password" id="signin-password" required
+                                class="form-input w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/60 focus:outline-none pr-12"
+                                placeholder="Enter your password">
+                            <button type="button" onclick="togglePassword('signin-password')"
+                                class="absolute right-3 top-3 text-white/60 hover:text-white transition-colors">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z">
+                                    </path>
+                                </svg>
+                            </button>
+                        </div>
+                        <div id="signin-password-error" class="validation-message text-red-300 text-sm mt-1"></div>
+                    </div>
+
+                    <div class="flex items-center justify-between">
+                        <label class="flex items-center">
+                            <input type="checkbox"
+                                class="rounded border-white/20 bg-white/10 text-red-600 focus:ring-red-500">
+                            <span class="ml-2 text-sm">Remember me</span>
+                        </label>
+                        <button type="button" class="text-sm text-white/80 hover:text-white transition-colors">Forgot
+                            password?</button>
+                    </div>
+
+                    <button type="submit" class="btn-primary w-full py-3 rounded-lg font-semibold text-white">
+                        <span class="signin-btn-text">Sign In</span>
+                        <div class="loading-spinner hidden mx-auto"></div>
+                    </button>
+                </form>
+
+                <div class="mt-6 text-center">
+                    <p class="text-white/80">Don't have an account?
+                        <button onclick="switchAuthForm('register')"
+                            class="text-white font-semibold hover:underline">Register here</button>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Register Form -->
+            <div id="register-form" class="relative z-10 hidden">
+                <div class="text-center mb-8">
+                    <div class="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-2xl">📝</span>
+                    </div>
+                    <h2 class="text-2xl font-bold mb-2">Join BBC News</h2>
+                    <p class="text-white/80">Create your account to get started</p>
+                </div>
+
+                <form onsubmit="handleRegister(event)" class="space-y-6">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium mb-2">First Name</label>
+                            <input type="text" id="register-firstname" required
+                                class="form-input w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/60 focus:outline-none"
+                                placeholder="John">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Last Name</label>
+                            <input type="text" id="register-lastname" required
+                                class="form-input w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/60 focus:outline-none"
+                                placeholder="Doe">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Email Address</label>
+                        <input type="email" id="register-email" required
+                            class="form-input w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/60 focus:outline-none"
+                            placeholder="john.doe@email.com">
+                        <div id="register-email-error" class="validation-message text-red-300 text-sm mt-1"></div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Password</label>
+                        <div class="relative">
+                            <input type="password" id="register-password" required
+                                class="form-input w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/60 focus:outline-none pr-12"
+                                placeholder="Create a strong password">
+                            <button type="button" onclick="togglePassword('register-password')"
+                                class="absolute right-3 top-3 text-white/60 hover:text-white transition-colors">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z">
+                                    </path>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="text-xs text-white/60 mt-1">Must be at least 8 characters with numbers and letters
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="flex items-start space-x-3">
+                            <input type="checkbox" required
+                                class="mt-1 rounded border-white/20 bg-white/10 text-red-600 focus:ring-red-500">
+                            <span class="text-sm text-white/80">I agree to the <a href="#"
+                                    class="text-white underline">Terms of Service</a> and <a href="#"
+                                    class="text-white underline">Privacy Policy</a></span>
+                        </label>
+                    </div>
+
+                    <button type="submit" class="btn-primary w-full py-3 rounded-lg font-semibold text-white">
+                        <span class="register-btn-text">Create Account</span>
+                        <div class="loading-spinner hidden mx-auto"></div>
+                    </button>
+                </form>
+
+                <div class="mt-6 text-center">
+                    <p class="text-white/80">Already have an account?
+                        <button onclick="switchAuthForm('signin')" class="text-white font-semibold hover:underline">Sign
+                            in here</button>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Account Management Form -->
+            <div id="account-form" class="relative z-10 hidden">
+                <div class="text-center mb-8">
+                    <div class="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-2xl">👤</span>
+                    </div>
+                    <h2 class="text-2xl font-bold mb-2">My Account</h2>
+                    <p class="text-white/80">Manage your BBC News preferences</p>
+                </div>
+
+                <div class="space-y-6">
+                    <div class="bg-white/10 rounded-lg p-6">
+                        <h3 class="font-semibold mb-4 flex items-center">
+                            <span class="mr-2">📰</span>
+                            News Preferences
+                        </h3>
+                        <div class="space-y-3">
+                            <label class="flex items-center justify-between">
+                                <span class="text-sm">Breaking News Alerts</span>
+                                <input type="checkbox" checked
+                                    class="rounded border-white/20 bg-white/10 text-red-600 focus:ring-red-500">
+                            </label>
+                            <label class="flex items-center justify-between">
+                                <span class="text-sm">Daily Newsletter</span>
+                                <input type="checkbox" checked
+                                    class="rounded border-white/20 bg-white/10 text-red-600 focus:ring-red-500">
+                            </label>
+                            <label class="flex items-center justify-between">
+                                <span class="text-sm">Sports Updates</span>
+                                <input type="checkbox"
+                                    class="rounded border-white/20 bg-white/10 text-red-600 focus:ring-red-500">
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="bg-white/10 rounded-lg p-6">
+                        <h3 class="font-semibold mb-4 flex items-center">
+                            <span class="mr-2">🔔</span>
+                            Notification Settings
+                        </h3>
+                        <div class="space-y-3">
+                            <label class="flex items-center justify-between">
+                                <span class="text-sm">Push Notifications</span>
+                                <input type="checkbox" checked
+                                    class="rounded border-white/20 bg-white/10 text-red-600 focus:ring-red-500">
+                            </label>
+                            <label class="flex items-center justify-between">
+                                <span class="text-sm">Email Notifications</span>
+                                <input type="checkbox" checked
+                                    class="rounded border-white/20 bg-white/10 text-red-600 focus:ring-red-500">
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="flex space-x-4">
+                        <button onclick="switchAuthForm('signin')"
+                            class="flex-1 bg-white/20 hover:bg-white/30 py-3 rounded-lg font-semibold transition-colors">
+                            Sign In
+                        </button>
+                        <button onclick="switchAuthForm('register')"
+                            class="flex-1 btn-primary py-3 rounded-lg font-semibold">
+                            Register
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="bbc-red shadow-md">
+        <div class="container mx-auto px-4">
+            <div id="nev" class="flex  overflow-x-auto mobile-nav-scroll">
+                <a href="#"
+                    class="nav-item active text-white px-4 py-3 text-sm font-medium whitespace-nowrap mobile-touch-target"
+                    onclick="showSection('home', this)">Home</a>
+                <a href="#"
+                    class="nav-item text-white px-4 py-3 text-sm font-medium whitespace-nowrap mobile-touch-target"
+                    onclick="showSection('uk', this)">UK</a>
+                <a href="#"
+                    class="nav-item text-white px-4 py-3 text-sm font-medium whitespace-nowrap mobile-touch-target"
+                    onclick="showSection('world', this)">World</a>
+                <a href="#"
+                    class="nav-item text-white px-4 py-3 text-sm font-medium whitespace-nowrap mobile-touch-target"
+                    onclick="showSection('business', this)">Business</a>
+                <a href="#"
+                    class="nav-item text-white px-4 py-3 text-sm font-medium whitespace-nowrap mobile-touch-target"
+                    onclick="showSection('politics', this)">Politics</a>
+                <a href="#"
+                    class="nav-item text-white px-4 py-3 text-sm font-medium whitespace-nowrap mobile-touch-target"
+                    onclick="showSection('technology', this)">Technology</a>
+                <a href="#"
+                    class="nav-item text-white px-4 py-3 text-sm font-medium whitespace-nowrap mobile-touch-target"
+                    onclick="showSection('science', this)">Science</a>
+                <a href="#"
+                    class="nav-item text-white px-4 py-3 text-sm font-medium whitespace-nowrap mobile-touch-target"
+                    onclick="showSection('health', this)">Health</a>
+                <a href="#"
+                    class="nav-item text-white px-4 py-3 text-sm font-medium whitespace-nowrap mobile-touch-target"
+                    onclick="showSection('sport', this)">Sport</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="md:hidden bg-red-700 text-white hidden shadow-lg">
+        <div class="px-4 py-3 space-y-1">
+            <a href="#" class="block py-3 px-4 rounded-lg hover:bg-red-600 transition-colors mobile-touch-target"
+                onclick="showSection('home', this)">🏠 Home</a>
+            <a href="#" class="block py-3 px-4 rounded-lg hover:bg-red-600 transition-colors mobile-touch-target"
+                onclick="showSection('uk', this)">🇬🇧 UK</a>
+            <a href="#" class="block py-3 px-4 rounded-lg hover:bg-red-600 transition-colors mobile-touch-target"
+                onclick="showSection('world', this)">🌍 World</a>
+            <a href="#" class="block py-3 px-4 rounded-lg hover:bg-red-600 transition-colors mobile-touch-target"
+                onclick="showSection('business', this)">💼 Business</a>
+            <a href="#" class="block py-3 px-4 rounded-lg hover:bg-red-600 transition-colors mobile-touch-target"
+                onclick="showSection('politics', this)">🏛️ Politics</a>
+            <a href="#" class="block py-3 px-4 rounded-lg hover:bg-red-600 transition-colors mobile-touch-target"
+                onclick="showSection('technology', this)">💻 Technology</a>
+            <a href="#" class="block py-3 px-4 rounded-lg hover:bg-red-600 transition-colors mobile-touch-target"
+                onclick="showSection('science', this)">🔬 Science</a>
+            <a href="#" class="block py-3 px-4 rounded-lg hover:bg-red-600 transition-colors mobile-touch-target"
+                onclick="showSection('health', this)">🏥 Health</a>
+            <a href="#" class="block py-3 px-4 rounded-lg hover:bg-red-600 transition-colors mobile-touch-target"
+                onclick="showSection('sport', this)">⚽ Sport</a>
+
+            <!-- Mobile Auth Links -->
+            <div class="border-t border-red-600 pt-3 mt-3">
+                <button onclick="openAuthModal('signin')"
+                    class="block w-full text-left py-3 px-4 rounded-lg hover:bg-red-600 transition-colors mobile-touch-target">🔐
+                    Sign In</button>
+                <button onclick="openAuthModal('register')"
+                    class="block w-full text-left py-3 px-4 rounded-lg hover:bg-red-600 transition-colors mobile-touch-target">📝
+                    Register</button>
+                <button onclick="openAuthModal('account')"
+                    class="block w-full text-left py-3 px-4 rounded-lg hover:bg-red-600 transition-colors mobile-touch-target">👤
+                    My Account</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile FAB -->
+    <button class="mobile-fab md:hidden" onclick="scrollToTop()" title="Back to top">
+        ↑
+    </button>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-6">
+        <!-- Home Section -->
+        <div id="home-section" class="section section-fade active">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
+                <!-- Main Content -->
+                <div class="lg:col-span-2 space-y-8">
+                    <!-- Lead Story -->
+                    <article class="border-b border-gray-200 pb-8">
+                        <div
+                            class="bg-gradient-to-br from-blue-600 via-green-500 to-teal-600 h-64 sm:h-80 mb-4 flex items-center justify-center rounded-xl shadow-lg mobile-story-image">
+                            <span class="text-6xl sm:text-8xl text-white drop-shadow-lg">🌍</span>
+                        </div>
+                        <div class="space-y-3">
+                            <div class="flex items-center space-x-2 text-sm text-gray-500">
+                                <span
+                                    class="bg-red-600 text-white px-3 py-1 text-xs font-bold rounded-full">BREAKING</span>
+                                <span>Environment • 2 hours ago</span>
+                            </div>
+                            <h1 class="text-2xl sm:text-4xl font-bold leading-tight cursor-pointer hover:text-blue-600 transition-colors mobile-story-title"
+                                onclick="openArticle('climate')">
+                                Climate summit reaches historic $500bn global agreement
+                            </h1>
+                            <p class="text-gray-600 text-base sm:text-lg leading-relaxed mobile-story-text">
+                                195 nations commit to unprecedented environmental action with binding targets for carbon
+                                reduction and renewable energy adoption, marking a pivotal moment in global climate
+                                policy.
+                            </p>
+                            <div class="flex flex-wrap items-center gap-4 text-sm text-gray-500">
+                                <span class="font-medium">By Sarah Johnson, Environment Correspondent</span>
+                                <span class="flex items-center space-x-1">
+                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
+                                        <path fill-rule="evenodd"
+                                            d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                    <span>2.4k views</span>
+                                </span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Secondary Stories -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mobile-story-grid">
+                        <article class="story-card p-4 rounded-xl cursor-pointer mobile-card-padding"
+                            onclick="openArticle('markets')">
+                            <div
+                                class="bg-gradient-to-br from-green-500 to-blue-600 h-32 sm:h-40 mb-4 flex items-center justify-center rounded-lg shadow-md">
+                                <span class="text-3xl sm:text-4xl text-white">📈</span>
+                            </div>
+                            <div class="space-y-2">
+                                <div class="text-xs text-gray-500 font-medium">BUSINESS • 3 HOURS AGO</div>
+                                <h2 class="text-lg sm:text-xl font-bold leading-tight mobile-story-title">Global markets
+                                    surge following tech earnings beat</h2>
+                                <p class="text-gray-600 text-sm leading-relaxed mobile-story-text">Major technology
+                                    companies exceed expectations, driving worldwide market optimism and investor
+                                    confidence.</p>
+                                <div class="flex items-center space-x-2 text-xs text-gray-500">
+                                    <span>📊 Markets</span>
+                                    <span>•</span>
+                                    <span>1.2k shares</span>
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class="story-card p-4 rounded-xl cursor-pointer mobile-card-padding"
+                            onclick="openArticle('worldcup')">
+                            <div
+                                class="bg-gradient-to-br from-orange-500 to-red-600 h-32 sm:h-40 mb-4 flex items-center justify-center rounded-lg shadow-md">
+                                <span class="text-3xl sm:text-4xl text-white">⚽</span>
+                            </div>
+                            <div class="space-y-2">
+                                <div class="text-xs text-gray-500 font-medium">SPORT • 4 HOURS AGO</div>
+                                <h2 class="text-lg sm:text-xl font-bold leading-tight mobile-story-title">World Cup
+                                    qualifiers: Stunning upsets reshape tournament</h2>
+                                <p class="text-gray-600 text-sm leading-relaxed mobile-story-text">Underdog teams defeat
+                                    established powerhouses in shocking qualification results that nobody saw coming.
+                                </p>
+                                <div class="flex items-center space-x-2 text-xs text-gray-500">
+                                    <span>⚽ Football</span>
+                                    <span>•</span>
+                                    <span>3.1k shares</span>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+
+                    <!-- More Stories -->
+                    <div class="border-t border-gray-200 pt-8">
+                        <h2 class="text-2xl font-bold mb-6 gradient-text">More top stories</h2>
+                        <div class="space-y-4">
+                            <article class="story-card flex space-x-4 p-4 rounded-xl cursor-pointer"
+                                onclick="openArticle('healthcare')">
+                                <div
+                                    class="bg-gradient-to-br from-purple-500 to-pink-600 w-24 h-16 flex items-center justify-center rounded-lg flex-shrink-0 shadow-md">
+                                    <span class="text-2xl text-white">🏥</span>
+                                </div>
+                                <div class="flex-1 space-y-1">
+                                    <div class="text-xs text-gray-500 font-medium">POLITICS • 5 HOURS AGO</div>
+                                    <h3 class="font-bold text-base leading-tight">Healthcare reform bill passes
+                                        parliament with overwhelming support</h3>
+                                    <p class="text-gray-600 text-sm leading-relaxed">Comprehensive legislation promises
+                                        universal coverage and expanded mental health services across all regions.</p>
+                                    <div class="flex items-center space-x-2 text-xs text-gray-500">
+                                        <span>🏛️ Westminster</span>
+                                        <span>•</span>
+                                        <span>856 shares</span>
+                                    </div>
+                                </div>
+                            </article>
+
+                            <article class="story-card flex space-x-4 p-4 rounded-xl cursor-pointer"
+                                onclick="openArticle('space')">
+                                <div
+                                    class="bg-gradient-to-br from-blue-600 to-purple-600 w-24 h-16 flex items-center justify-center rounded-lg flex-shrink-0 shadow-md">
+                                    <span class="text-2xl text-white">🚀</span>
+                                </div>
+                                <div class="flex-1 space-y-1">
+                                    <div class="text-xs text-gray-500 font-medium">SCIENCE • 6 HOURS AGO</div>
+                                    <h3 class="font-bold text-base leading-tight">Space mission discovers potentially
+                                        habitable exoplanet</h3>
+                                    <p class="text-gray-600 text-sm leading-relaxed">Scientists identify Earth-like
+                                        world just 22 light-years away in breakthrough astronomical discovery.</p>
+                                    <div class="flex items-center space-x-2 text-xs text-gray-500">
+                                        <span>🔭 Space</span>
+                                        <span>•</span>
+                                        <span>2.3k shares</span>
+                                    </div>
+                                </div>
+                            </article>
+
+                            <article class="story-card flex space-x-4 p-4 rounded-xl cursor-pointer"
+                                onclick="openArticle('cyber')">
+                                <div
+                                    class="bg-gradient-to-br from-red-500 to-orange-600 w-24 h-16 flex items-center justify-center rounded-lg flex-shrink-0 shadow-md">
+                                    <span class="text-2xl text-white">🔒</span>
+                                </div>
+                                <div class="flex-1 space-y-1">
+                                    <div class="text-xs text-gray-500 font-medium">TECHNOLOGY • 7 HOURS AGO</div>
+                                    <h3 class="font-bold text-base leading-tight">Major cybersecurity breach affects
+                                        millions worldwide</h3>
+                                    <p class="text-gray-600 text-sm leading-relaxed">International investigation
+                                        launched into sophisticated attack on global infrastructure systems.</p>
+                                    <div class="flex items-center space-x-2 text-xs text-gray-500">
+                                        <span>💻 Cyber</span>
+                                        <span>•</span>
+                                        <span>1.8k shares</span>
+                                    </div>
+                                </div>
+                            </article>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Enhanced Sidebar -->
+                <div class="space-y-6 mobile-sidebar-spacing">
+                    <!-- Watch/Listen -->
+                    <div class="glass-effect p-5 rounded-xl mobile-card-padding shadow-lg">
+                        <h3 class="font-bold mb-4 text-lg flex items-center">
+                            <span class="mr-2">📺</span>
+                            Watch/Listen
+                        </h3>
+                        <div class="space-y-3">
+                            <div
+                                class="flex space-x-3 cursor-pointer hover:bg-white/50 p-3 rounded-lg transition-all mobile-touch-target">
+                                <div
+                                    class="bg-red-600 w-16 h-12 flex items-center justify-center rounded-lg flex-shrink-0 shadow-sm">
+                                    <span class="text-white text-sm">▶</span>
+                                </div>
+                                <div class="min-w-0 flex-1">
+                                    <h4 class="font-semibold text-sm">BBC News at Six</h4>
+                                    <p class="text-xs text-gray-600">Latest headlines and analysis</p>
+                                    <div class="text-xs text-red-600 font-medium">LIVE NOW</div>
+                                </div>
+                            </div>
+                            <div
+                                class="flex space-x-3 cursor-pointer hover:bg-white/50 p-3 rounded-lg transition-all mobile-touch-target">
+                                <div
+                                    class="bg-blue-600 w-16 h-12 flex items-center justify-center rounded-lg flex-shrink-0 shadow-sm">
+                                    <span class="text-white text-sm">🎵</span>
+                                </div>
+                                <div class="min-w-0 flex-1">
+                                    <h4 class="font-semibold text-sm">BBC Radio 4 Today</h4>
+                                    <p class="text-xs text-gray-600">Morning news and current affairs</p>
+                                    <div class="text-xs text-gray-500">Available on iPlayer</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Most Read -->
+                    <div class="glass-effect p-5 rounded-xl shadow-lg">
+                        <h3 class="font-bold mb-4 text-lg flex items-center">
+                            <span class="mr-2">🔥</span>
+                            Most Read
+                        </h3>
+                        <ol class="space-y-3">
+                            <li
+                                class="flex items-start space-x-3 cursor-pointer hover:bg-white/50 p-3 rounded-lg transition-all">
+                                <span
+                                    class="bg-red-600 text-white text-xs px-2 py-1 rounded-full font-bold min-w-[24px] text-center">1</span>
+                                <span class="text-sm font-medium leading-tight">Climate summit reaches historic
+                                    agreement</span>
+                            </li>
+                            <li
+                                class="flex items-start space-x-3 cursor-pointer hover:bg-white/50 p-3 rounded-lg transition-all">
+                                <span
+                                    class="bg-red-600 text-white text-xs px-2 py-1 rounded-full font-bold min-w-[24px] text-center">2</span>
+                                <span class="text-sm font-medium leading-tight">Global markets surge on tech
+                                    earnings</span>
+                            </li>
+                            <li
+                                class="flex items-start space-x-3 cursor-pointer hover:bg-white/50 p-3 rounded-lg transition-all">
+                                <span
+                                    class="bg-red-600 text-white text-xs px-2 py-1 rounded-full font-bold min-w-[24px] text-center">3</span>
+                                <span class="text-sm font-medium leading-tight">World Cup qualifiers deliver
+                                    upsets</span>
+                            </li>
+                            <li
+                                class="flex items-start space-x-3 cursor-pointer hover:bg-white/50 p-3 rounded-lg transition-all">
+                                <span
+                                    class="bg-red-600 text-white text-xs px-2 py-1 rounded-full font-bold min-w-[24px] text-center">4</span>
+                                <span class="text-sm font-medium leading-tight">Healthcare reform passes
+                                    parliament</span>
+                            </li>
+                            <li
+                                class="flex items-start space-x-3 cursor-pointer hover:bg-white/50 p-3 rounded-lg transition-all">
+                                <span
+                                    class="bg-red-600 text-white text-xs px-2 py-1 rounded-full font-bold min-w-[24px] text-center">5</span>
+                                <span class="text-sm font-medium leading-tight">Space mission finds habitable
+                                    planet</span>
+                            </li>
+                        </ol>
+                    </div>
+
+                    <!-- Weather Widget -->
+                    <div class="bg-gradient-to-br from-blue-600 to-blue-800 text-white p-5 rounded-xl shadow-lg">
+                        <h3 class="font-bold mb-4 flex items-center">
+                            <span class="mr-2">🌤️</span>
+                            Weather
+                        </h3>
+                        <div class="flex justify-between items-center mb-4">
+                            <div>
+                                <p class="text-3xl font-bold">8°C</p>
+                                <p class="text-sm opacity-90">London</p>
+                            </div>
+                            <div class="text-5xl">🌧️</div>
+                        </div>
+                        <p class="text-sm opacity-90 mb-3">Light rain with cloudy skies. Winds from the southwest at 15
+                            mph.</p>
+                        <div class="flex justify-between text-xs opacity-75">
+                            <span>High: 12°C</span>
+                            <span>Low: 5°C</span>
+                        </div>
+                        <a href="#" class="text-sm underline mt-3 inline-block hover:no-underline transition-all">7-day
+                            forecast →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Other sections remain the same but with enhanced styling -->
+        <!-- UK Section -->
+        <div id="uk-section" class="section section-fade hidden">
+            <div class="mb-8">
+                <h1 class="text-3xl sm:text-4xl font-bold mb-3 gradient-text">UK News</h1>
+                <p class="text-gray-600 text-lg">News from England, Scotland, Wales and Northern Ireland</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div class="lg:col-span-2 space-y-8">
+                    <!-- Featured UK Story -->
+                    <article class="border-b border-gray-200 pb-8">
+                        <div
+                            class="bg-gradient-to-br from-red-600 to-blue-600 h-64 mb-4 flex items-center justify-center rounded-xl shadow-lg">
+                            <span class="text-6xl text-white">🏛️</span>
+                        </div>
+                        <div class="space-y-3">
+                            <div class="text-xs text-gray-500 font-medium">POLITICS • 1 HOUR AGO</div>
+                            <h2 class="text-2xl sm:text-3xl font-bold cursor-pointer hover:text-blue-600 transition-colors"
+                                onclick="openArticle('parliament')">
+                                Parliament approves major infrastructure spending bill
+                            </h2>
+                            <p class="text-gray-600 text-lg leading-relaxed">£50 billion investment package aims to
+                                modernise transport networks and digital infrastructure across all four nations.</p>
+                            <div class="flex items-center space-x-4 text-sm text-gray-500">
+                                <span class="font-medium">By Political Correspondent</span>
+                                <span>Westminster</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- UK Regional Stories -->
+                    <div class="space-y-6">
+                        <h3 class="text-xl font-bold">Regional News</h3>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <article class="story-card p-4 rounded-xl cursor-pointer">
+                                <div
+                                    class="bg-gradient-to-br from-blue-500 to-green-500 w-full h-32 flex items-center justify-center rounded-lg mb-3 shadow-md">
+                                    <span class="text-3xl text-white">🏴󠁧󠁢󠁥󠁮󠁧󠁿</span>
+                                </div>
+                                <div class="space-y-2">
+                                    <div class="text-xs text-gray-500 font-medium">ENGLAND • 2 HOURS AGO</div>
+                                    <h4 class="font-bold text-base">New housing development approved for Manchester</h4>
+                                    <p class="text-gray-600 text-sm">10,000 new homes to be built as part of Northern
+                                        Powerhouse initiative.</p>
+                                </div>
+                            </article>
+
+                            <article class="story-card p-4 rounded-xl cursor-pointer">
+                                <div
+                                    class="bg-gradient-to-br from-blue-500 to-white w-full h-32 flex items-center justify-center rounded-lg mb-3 shadow-md">
+                                    <span class="text-3xl">🏴󠁧󠁢󠁳󠁣󠁴󠁿</span>
+                                </div>
+                                <div class="space-y-2">
+                                    <div class="text-xs text-gray-500 font-medium">SCOTLAND • 3 HOURS AGO</div>
+                                    <h4 class="font-bold text-base">Wind farm project generates record energy output
+                                    </h4>
+                                    <p class="text-gray-600 text-sm">Offshore installation produces enough electricity
+                                        to power 2 million homes.</p>
+                                </div>
+                            </article>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- UK Sidebar -->
+                <div class="space-y-6">
+                    <div class="glass-effect p-5 rounded-xl shadow-lg">
+                        <h3 class="font-bold mb-4 flex items-center">
+                            <span class="mr-2">🏛️</span>
+                            UK Politics
+                        </h3>
+                        <div class="space-y-3 text-sm">
+                            <div class="cursor-pointer hover:bg-white/50 p-3 rounded-lg transition-all">
+                                <h4 class="font-semibold mb-1">PM announces cabinet reshuffle</h4>
+                                <p class="text-xs text-gray-600">Three new ministers appointed to key positions</p>
+                            </div>
+                            <div class="cursor-pointer hover:bg-white/50 p-3 rounded-lg transition-all">
+                                <h4 class="font-semibold mb-1">Opposition calls for early election</h4>
+                                <p class="text-xs text-gray-600">Labour leader demands vote of confidence</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="glass-effect p-5 rounded-xl shadow-lg">
+                        <h3 class="font-bold mb-4 flex items-center">
+                            <span class="mr-2">🌤️</span>
+                            Local Weather
+                        </h3>
+                        <div class="space-y-3 text-sm">
+                            <div class="flex justify-between items-center p-2 rounded-lg bg-white/30">
+                                <span class="font-medium">London</span>
+                                <span class="flex items-center space-x-1">
+                                    <span>8°C</span>
+                                    <span>🌧️</span>
+                                </span>
+                            </div>
+                            <div class="flex justify-between items-center p-2 rounded-lg bg-white/30">
+                                <span class="font-medium">Edinburgh</span>
+                                <span class="flex items-center space-x-1">
+                                    <span>5°C</span>
+                                    <span>❄️</span>
+                                </span>
+                            </div>
+                            <div class="flex justify-between items-center p-2 rounded-lg bg-white/30">
+                                <span class="font-medium">Cardiff</span>
+                                <span class="flex items-center space-x-1">
+                                    <span>9°C</span>
+                                    <span>☁️</span>
+                                </span>
+                            </div>
+                            <div class="flex justify-between items-center p-2 rounded-lg bg-white/30">
+                                <span class="font-medium">Belfast</span>
+                                <span class="flex items-center space-x-1">
+                                    <span>7°C</span>
+                                    <span>🌦️</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Placeholder sections for other categories -->
+        <div id="world-section" class="section section-fade hidden">
+            <div class="text-center py-20">
+                <div class="loading-spinner mx-auto mb-4"></div>
+                <h2 class="text-2xl font-bold mb-2">World News</h2>
+                <p class="text-gray-600">Loading international news and global affairs...</p>
+            </div>
+        </div>
+
+        <div id="business-section" class="section section-fade hidden">
+            <div class="text-center py-20">
+                <div class="loading-spinner mx-auto mb-4"></div>
+                <h2 class="text-2xl font-bold mb-2">Business</h2>
+                <p class="text-gray-600">Loading latest business news and market updates...</p>
+            </div>
+        </div>
+
+        <div id="politics-section" class="section section-fade hidden">
+            <div class="text-center py-20">
+                <div class="loading-spinner mx-auto mb-4"></div>
+                <h2 class="text-2xl font-bold mb-2">Politics</h2>
+                <p class="text-gray-600">Loading political news and analysis...</p>
+            </div>
+        </div>
+
+        <div id="technology-section" class="section section-fade hidden">
+            <div class="text-center py-20">
+                <div class="loading-spinner mx-auto mb-4"></div>
+                <h2 class="text-2xl font-bold mb-2">Technology</h2>
+                <p class="text-gray-600">Loading latest technology news...</p>
+            </div>
+        </div>
+
+        <div id="science-section" class="section section-fade hidden">
+            <div class="text-center py-20">
+                <div class="loading-spinner mx-auto mb-4"></div>
+                <h2 class="text-2xl font-bold mb-2">Science & Environment</h2>
+                <p class="text-gray-600">Loading scientific discoveries and environmental news...</p>
+            </div>
+        </div>
+
+        <div id="health-section" class="section section-fade hidden">
+            <div class="text-center py-20">
+                <div class="loading-spinner mx-auto mb-4"></div>
+                <h2 class="text-2xl font-bold mb-2">Health</h2>
+                <p class="text-gray-600">Loading health news and medical research...</p>
+            </div>
+        </div>
+
+        <div id="sport-section" class="section section-fade hidden">
+            <div class="text-center py-20">
+                <div class="loading-spinner mx-auto mb-4"></div>
+                <h2 class="text-2xl font-bold mb-2">Sport</h2>
+                <p class="text-gray-600">Loading latest sports news and results...</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Enhanced Article Modal -->
+    <div id="article-modal"
+        class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto mobile-modal shadow-2xl">
+            <div
+                class="sticky top-0 bg-white border-b border-gray-200 p-4 flex justify-between items-center rounded-t-2xl">
+                <div class="flex items-center space-x-3">
+                    <div class="w-8 h-8 bg-red-600 rounded-full flex items-center justify-center">
+                        <span class="text-white text-xs font-bold">BBC</span>
+                    </div>
+                    <span class="font-medium text-gray-600">BBC News</span>
+                </div>
+                <button onclick="closeArticle()"
+                    class="text-gray-400 hover:text-gray-600 text-2xl p-2 hover:bg-gray-100 rounded-full transition-all">
+                    ×
+                </button>
+            </div>
+            <div class="p-6 mobile-modal-content">
+                <h1 id="modal-title"
+                    class="text-2xl sm:text-3xl font-bold text-gray-800 mb-4 mobile-modal-title leading-tight"></h1>
+                <div id="modal-content" class="prose prose-lg max-w-none"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Enhanced Footer -->
+    <footer class="bg-gradient-to-r from-gray-900 to-black text-white mt-16">
+        <div class="container mx-auto px-4 py-12">
+            <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-8">
+                <div>
+                    <h4 class="font-bold mb-4 text-base flex items-center">
+                        <span class="mr-2">📰</span>
+                        News
+                    </h4>
+                    <ul class="space-y-2 text-sm text-gray-300">
+                        <li><a href="#"
+                                class="hover:text-white transition-colors mobile-touch-target block py-1">Home</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors mobile-touch-target block py-1">UK</a>
+                        </li>
+                        <li><a href="#"
+                                class="hover:text-white transition-colors mobile-touch-target block py-1">World</a></li>
+                        <li><a href="#"
+                                class="hover:text-white transition-colors mobile-touch-target block py-1">Business</a>
+                        </li>
+                        <li><a href="#"
+                                class="hover:text-white transition-colors mobile-touch-target block py-1">Politics</a>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4 text-base flex items-center">
+                        <span class="mr-2">⚽</span>
+                        Sport
+                    </h4>
+                    <ul class="space-y-2 text-sm text-gray-300">
+                        <li><a href="#"
+                                class="hover:text-white transition-colors mobile-touch-target block py-1">Football</a>
+                        </li>
+                        <li><a href="#"
+                                class="hover:text-white transition-colors mobile-touch-target block py-1">Cricket</a>
+                        </li>
+                        <li><a href="#"
+                                class="hover:text-white transition-colors mobile-touch-target block py-1">Rugby</a></li>
+                        <li><a href="#"
+                                class="hover:text-white transition-colors mobile-touch-target block py-1">Tennis</a>
+                        </li>
+                        <li><a href="#"
+                                class="hover:text-white transition-colors mobile-touch-target block py-1">Formula 1</a>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4 text-base flex items-center">
+                        <span class="mr-2">🔬</span>
+                        More
+                    </h4>
+                    <ul class="space-y-2 text-sm text-gray-300">
+                        <li><a href="#"
+                                class="hover:text-white transition-colors mobile-touch-target block py-1">Technology</a>
+                        </li>
+                        <li><a href="#"
+                                class="hover:text-white transition-colors mobile-touch-target block py-1">Science</a>
+                        </li>
+                        <li><a href="#"
+                                class="hover:text-white transition-colors mobile-touch-target block py-1">Health</a>
+                        </li>
+                        <li><a href="#"
+                                class="hover:text-white transition-colors mobile-touch-target block py-1">Weather</a>
+                        </li>
+                        <li><a href="#"
+                                class="hover:text-white transition-colors mobile-touch-target block py-1">Travel</a>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4 text-base flex items-center">
+                        <span class="mr-2">📱</span>
+                        BBC
+                    </h4>
+                    <ul class="space-y-2 text-sm text-gray-300">
+                        <li><a href="#" class="hover:text-white transition-colors mobile-touch-target block py-1">Terms
+                                of Use</a></li>
+                        <li><a href="#"
+                                class="hover:text-white transition-colors mobile-touch-target block py-1">Privacy
+                                Policy</a></li>
+                        <li><a href="#"
+                                class="hover:text-white transition-colors mobile-touch-target block py-1">Cookies</a>
+                        </li>
+                        <li><a href="#"
+                                class="hover:text-white transition-colors mobile-touch-target block py-1">Accessibility</a>
+                        </li>
+                        <li><a href="#"
+                                class="hover:text-white transition-colors mobile-touch-target block py-1">Contact
+                                BBC</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Social Media & Apps -->
+            <div class="border-t border-gray-700 mt-8 pt-8">
+                <div class="flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
+                    <div class="flex items-center space-x-4">
+                        <span class="text-sm text-gray-400">Follow BBC News:</span>
+                        <div class="flex space-x-3">
+                            <a href="#"
+                                class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center hover:bg-blue-700 transition-colors">
+                                <span class="text-white text-xs">f</span>
+                            </a>
+                            <a href="#"
+                                class="w-8 h-8 bg-blue-400 rounded-full flex items-center justify-center hover:bg-blue-500 transition-colors">
+                                <span class="text-white text-xs">t</span>
+                            </a>
+                            <a href="#"
+                                class="w-8 h-8 bg-red-600 rounded-full flex items-center justify-center hover:bg-red-700 transition-colors">
+                                <span class="text-white text-xs">▶</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-4 text-sm text-gray-400">
+                        <span>Download BBC News App</span>
+                        <div class="flex space-x-2">
+                            <a href="#"
+                                class="bg-gray-800 px-3 py-1 rounded text-xs hover:bg-gray-700 transition-colors">iOS</a>
+                            <a href="#"
+                                class="bg-gray-800 px-3 py-1 rounded text-xs hover:bg-gray-700 transition-colors">Android</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-700 mt-8 pt-6 text-center text-xs text-gray-400">
+                <p class="leading-relaxed">
+                    Copyright © 2024 BBC. The BBC is not responsible for the content of external sites.
+                    <a href="#" class="text-blue-400 hover:underline transition-colors">Read about our approach to
+                        external linking.</a>
+                </p>
+            </div>
+        </div>
+    </footer>
+
+
+    <script type="module" src="./js/index.js"></script>
+
+</body>
+
+</html>

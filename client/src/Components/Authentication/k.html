@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>tinwin Form</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #6a11cb, #2575fc);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+  }
+
+  .container {
+    display: flex;
+    gap: 40px;
+  }
+
+  .form-card {
+    background: #fff;
+    border-radius: 15px;
+    padding: 30px;
+    width: 300px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+  }
+
+  .form-card h2 {
+    margin-bottom: 20px;
+    text-align: center;
+    color: #333;
+  }
+
+  .form-card input {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+  }
+
+  .form-card button {
+    width: 100%;
+    padding: 12px;
+    background: #3498db;
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+
+  .form-card button:hover {
+    background: #2980b9;
+  }
+
+  .social-icons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 15px;
+  }
+
+  .social-icons img {
+    width: 30px;
+    cursor: pointer;
+
+  }
+
+  .form-footer {
+    text-align: center;
+    margin-top: 15px;
+    font-size: 12px;
+  }
+
+  .form-footer a {
+    color: #3498db;
+    text-decoration: none;
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <!-- Sign In Form -->
+    <div class="form-card">
+      <h2>tinwin</h2>
+      <input type="email" placeholder="Email">
+      <input type="password" placeholder="Password">
+      <button>tinwin</button>
+
+      <div class="social-icons">
+        <img src="https://img.icons8.com/color/48/000000/facebook-new.png"/>
+        <img src="https://img.icons8.com/color/48/000000/google-logo.png"/>
+        <img src="https://img.icons8.com/color/48/000000/twitter.png"/>
+      </div>
+
+      <div class="form-footer">
+        Don't have an account? <a href="#">Create one</a>
+      </div>
+    </div>
+
+    <!-- Sign Up Form -->
+    <div class="form-card">
+      <h2>tinwin</h2>
+      <input type="text" placeholder="Username">
+      <input type="email" placeholder="Email">
+      <input type="password" placeholder="Password">
+      <input type="password" placeholder="Confirm Password">
+      <button>tinwin</button>
+
+      <div class="form-footer">
+        Already have an account? <a href="#">Sign In</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
