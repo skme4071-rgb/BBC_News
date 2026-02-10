@@ -1,25 +1,10 @@
-plugins = []
-headers = []
-redirects = []
-
-[functions]
-
-[functions."*"]
-
 [build]
-publish = "C:\\Users\\iqbal\\OneDrive\\Desktop\\News-App-24"
-publishOrigin = "default"
+  command = "npm run build --prefix frontend"
+  publish = "frontend/build"
+  functions = "functions"
 
-[build.environment]
-
-[build.processing]
-
-[build.processing.css]
-
-[build.processing.html]
-
-[build.processing.images]
-
-[build.processing.js]
-
-[build.services]
+# SPA redirect rule
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
