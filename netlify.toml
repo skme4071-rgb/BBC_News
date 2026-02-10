@@ -1,9 +1,8 @@
 [build]
-  command = "npm run build --prefix client"
-  publish = "client/build"
+  command = "npm run build --prefix client"   # অথবা frontend
+  publish = "client/build"                    # অথবা frontend/build
   functions = "functions"
 
-# SPA redirect rule
 [[redirects]]
   from = "/*"
   to = "/index.html"
